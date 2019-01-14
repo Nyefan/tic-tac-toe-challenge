@@ -26,11 +26,11 @@ Make sure to provide instruction about how to setup, run and consume your REST A
 
 We prefer Python and the tornado framework, but they are not required. You can use whatever technology you prefer.
 
-Game data structure
-A game consists of:
+##Game data structure
+###A game consists of:
 
-two players, represented by their names as strings
-a board data structure (we are leaving you the choice of what data structure is more appropriate for the task). Keep in mind that this data structure needs to trak the status of each board element. Each element is null if the square is blank, or either 0 or 1 to indicate which player controls the square. 
+- two players, represented by their names as strings
+- a board data structure (we are leaving you the choice of what data structure is more appropriate for the task). Keep in mind that this data structure needs to trak the status of each board element. Each element is null if the square is blank, or either 0 or 1 to indicate which player controls the square. 
 
 Server API
 The server should complies with the JSON API specification.
