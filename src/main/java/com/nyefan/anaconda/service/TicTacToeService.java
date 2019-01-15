@@ -20,7 +20,7 @@ public class TicTacToeService {
 
     //TODO: inject an implementation of TicTacToeDao based on environment
     //      this also would allow for easier testing
-    private final TicTacToeDao dao = new TicTacToeInMemoryDao();
+    private TicTacToeDao dao = new TicTacToeInMemoryDao();
 
     public List<TicTacToeGame> getAllGames() {
         return dao.selectAllGames();

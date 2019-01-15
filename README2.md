@@ -4,9 +4,14 @@
 mvn spring-boot:run
 ```
 
-###Run tests
+###Run unit tests
 ```bash
 mvn clean test
+```
+
+###Run integration tests
+```bash
+mvn clean test -Dtest-groups=integration
 ```
 
 ###Smoke test

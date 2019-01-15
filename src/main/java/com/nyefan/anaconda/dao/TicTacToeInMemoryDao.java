@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public final class TicTacToeInMemoryDao implements TicTacToeDao {
 
     //emulating a table indexed by gameID
-    private static volatile ConcurrentMap<UUID, TicTacToeGame> db = new ConcurrentHashMap<>();
+    private static ConcurrentMap<UUID, TicTacToeGame> db = new ConcurrentHashMap<>();
 
     @Override
     public Optional<TicTacToeGame> selectGameByID(UUID gameID) {
@@ -27,7 +27,7 @@ public final class TicTacToeInMemoryDao implements TicTacToeDao {
     }
 
     @Override
-    public TicTacToeGame upsertGame(final TicTacToeGame game) {
+    public TicTacToeGame upsertGame(TicTacToeGame game) {
         db.put(game.getGameID(), game);
         return db.get(game.getGameID());
     }
