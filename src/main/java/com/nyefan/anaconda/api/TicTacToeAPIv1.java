@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1")
@@ -27,21 +27,21 @@ public class TicTacToeAPIv1 {
 
     @GetMapping("/api/games")
     public HttpEntity<List<TicTacToeGame>> getAllGames() {
-        return ResponseEntity.status(HttpStatus.OK).body(List.of(new TicTacToeGame("1", "2", new TicTacToeBoard())));
+        return ResponseEntity.status(HttpStatus.OK).body(List.of(new TicTacToeGame(UUID.randomUUID(), "1", "2", new TicTacToeBoard())));
     }
 
     @PostMapping("/api/games")
     public HttpEntity<TicTacToeGame> createGame() {
-        return ResponseEntity.status(HttpStatus.OK).body(new TicTacToeGame("1", "2", new TicTacToeBoard()));
+        return ResponseEntity.status(HttpStatus.OK).body(new TicTacToeGame(UUID.randomUUID(), "1", "2", new TicTacToeBoard()));
     }
 
     @GetMapping("/api/games/{id}")
     public HttpEntity<TicTacToeGame> getGame(@PathVariable("id") int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(new TicTacToeGame("1", "2", new TicTacToeBoard()));
+        return ResponseEntity.status(HttpStatus.OK).body(new TicTacToeGame(UUID.randomUUID(), "1", "2", new TicTacToeBoard()));
     }
 
     @PostMapping("/api/games/{id}")
     public HttpEntity<TicTacToeGame> submitMove(@PathVariable("id") int id, @RequestBody TicTacToeMoveRequest moveRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(new TicTacToeGame("1", "2", new TicTacToeBoard()));
+        return ResponseEntity.status(HttpStatus.OK).body(new TicTacToeGame(UUID.randomUUID(), "1", "2", new TicTacToeBoard()));
     }
 }
