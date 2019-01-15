@@ -1,8 +1,8 @@
 package com.nyefan.anaconda.api;
 
-import com.nyefan.anaconda.data.TicTacToeCreateRequest;
+import com.nyefan.anaconda.data.TicTacToeCreateGameRequest;
 import com.nyefan.anaconda.data.TicTacToeGame;
-import com.nyefan.anaconda.data.TicTacToeMoveRequest;
+import com.nyefan.anaconda.data.TicTacToeSubmitMoveRequest;
 import com.nyefan.anaconda.service.TicTacToeService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -35,7 +35,7 @@ public class TicTacToeAPIv1 {
     }
 
     @PostMapping("/api/games")
-    public HttpEntity<TicTacToeGame> createGame(@RequestBody TicTacToeCreateRequest createRequest) {
+    public HttpEntity<TicTacToeGame> createGame(@RequestBody TicTacToeCreateGameRequest createRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(service.createGame(createRequest));
     }
 
@@ -45,7 +45,7 @@ public class TicTacToeAPIv1 {
     }
 
     @PostMapping("/api/games/{id}")
-    public HttpEntity<TicTacToeGame> submitMove(@PathVariable("id") UUID id, @RequestBody TicTacToeMoveRequest moveRequest) {
+    public HttpEntity<TicTacToeGame> submitMove(@PathVariable("id") UUID id, @RequestBody TicTacToeSubmitMoveRequest moveRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(service.submitMove(id, moveRequest));
     }
 

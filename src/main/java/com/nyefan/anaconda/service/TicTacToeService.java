@@ -1,9 +1,9 @@
 package com.nyefan.anaconda.service;
 
 import com.nyefan.anaconda.data.TicTacToeBoard;
-import com.nyefan.anaconda.data.TicTacToeCreateRequest;
+import com.nyefan.anaconda.data.TicTacToeCreateGameRequest;
 import com.nyefan.anaconda.data.TicTacToeGame;
-import com.nyefan.anaconda.data.TicTacToeMoveRequest;
+import com.nyefan.anaconda.data.TicTacToeSubmitMoveRequest;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +13,7 @@ public class TicTacToeService {
         return List.of(new TicTacToeGame(UUID.randomUUID(), "1", "2", new TicTacToeBoard()));
     }
 
-    public TicTacToeGame createGame(TicTacToeCreateRequest createRequest) {
+    public TicTacToeGame createGame(TicTacToeCreateGameRequest createRequest) {
         return new TicTacToeGame(UUID.randomUUID(), createRequest.getPlayerOne(), createRequest.getPlayerTwo(), new TicTacToeBoard());
     }
 
@@ -21,7 +21,7 @@ public class TicTacToeService {
         return new TicTacToeGame(gameID, "1", "2", new TicTacToeBoard());
     }
 
-    public TicTacToeGame submitMove(UUID gameID, TicTacToeMoveRequest moveRequest) {
+    public TicTacToeGame submitMove(UUID gameID, TicTacToeSubmitMoveRequest moveRequest) {
         return new TicTacToeGame(gameID, "1", "2", new TicTacToeBoard());
     }
 }

@@ -1,10 +1,10 @@
 package com.nyefan.anaconda.data;
 
-public final class TicTacToeCreateRequest {
+public final class TicTacToeCreateGameRequest {
     private final String playerOne;
     private final String playerTwo;
 
-    public TicTacToeCreateRequest(String playerOne, String playerTwo) {
+    public TicTacToeCreateGameRequest(String playerOne, String playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
     }
