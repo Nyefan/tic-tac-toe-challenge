@@ -13,9 +13,10 @@ TASK: Your task it implement a simple but comprehensive REST API for a [tic-tac-
 
 The basic requirements for the game are:
 
-store a game board data structure that contains the game information
-allow two players to enter their names, and automatically assign one of them the circle and the other the 'x'allow each to play a turn, one at a time, during which the player selects a square of the board and it is filled in with their symbol
-indicate when one of the players has won, or the game is a draw
+- store a game board data structure that contains the game information
+- allow two players to enter their names, and automatically assign one of them the circle and the other the 'x' 
+- allow each to play a turn, one at a time, during which the player selects a square of the board and it is filled in with their symbol
+- indicate when one of the players has won, or the game is a draw
 In addition to implementing basic gameplay, the user must be able to save their game to the server.
 
 Since this is a coding challenge, the success of your mission depends on building a good rest API implementation. 
@@ -30,7 +31,7 @@ We prefer Python and the tornado framework, but they are not required. You can u
 ###A game consists of:
 
 - two players, represented by their names as strings
-- a board data structure (we are leaving you the choice of what data structure is more appropriate for the task). Keep in mind that this data structure needs to trak the status of each board element. Each element is null if the square is blank, or either 0 or 1 to indicate which player controls the square. 
+- a board data structure (we are leaving you the choice of what data structure is more appropriate for the task). Keep in mind that this data structure needs to track the status of each board element. Each element is null if the square is blank, or either 0 or 1 to indicate which player controls the square. 
 
 Server API
 The server should complies with the JSON API specification.
