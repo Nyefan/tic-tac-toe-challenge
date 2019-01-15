@@ -1,6 +1,5 @@
 package com.nyefan.anaconda.api;
 
-import com.nyefan.anaconda.data.TicTacToeBoard;
 import com.nyefan.anaconda.data.TicTacToeCreateRequest;
 import com.nyefan.anaconda.data.TicTacToeGame;
 import com.nyefan.anaconda.data.TicTacToeMoveRequest;

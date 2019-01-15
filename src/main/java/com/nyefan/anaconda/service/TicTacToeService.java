@@ -24,5 +24,4 @@ public class TicTacToeService {
     public TicTacToeGame submitMove(UUID gameID, TicTacToeMoveRequest moveRequest) {
         return new TicTacToeGame(gameID, "1", "2", new TicTacToeBoard());
     }
-
 }
