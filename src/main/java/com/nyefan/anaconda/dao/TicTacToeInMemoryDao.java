@@ -17,6 +17,7 @@ public final class TicTacToeInMemoryDao implements TicTacToeDao {
 
     @Override
     public Optional<TicTacToeGame> selectGameByID(UUID gameID) {
+        //This is the api most db libraries would expose, though it's a bit convoluted for this particular implementation
         return Optional.ofNullable(db.getOrDefault(gameID, null));
     }
 
