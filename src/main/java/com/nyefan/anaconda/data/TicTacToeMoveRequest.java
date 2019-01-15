@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
 
-public class TicTacToeMoveRequest {
+public final class TicTacToeMoveRequest {
 
     @JsonProperty("id")
     private final UUID   gameID;
