@@ -12,11 +12,18 @@ public final class TicTacToeSubmitMoveRequest {
     private final int    x;
     private final int    y;
 
-    public TicTacToeSubmitMoveRequest(String player, int x, int y) {
+    public TicTacToeSubmitMoveRequest(
+            @JsonProperty("player") String player,
+            @JsonProperty("x") int x,
+            @JsonProperty("y") int y) {
         this(UUID.randomUUID(), player, x, y);
     }
 
-    public TicTacToeSubmitMoveRequest(UUID gameID, String player, int x, int y) {
+    public TicTacToeSubmitMoveRequest(
+            @JsonProperty("id") UUID gameID,
+            @JsonProperty("player") String player,
+            @JsonProperty("x") int x,
+            @JsonProperty("y") int y) {
         this.gameID = gameID;
         this.player = player;
         this.x = x;
