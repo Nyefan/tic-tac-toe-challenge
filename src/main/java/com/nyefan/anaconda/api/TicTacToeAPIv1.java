@@ -1,8 +1,10 @@
 package com.nyefan.anaconda.api;
 
 import com.nyefan.anaconda.data.TicTacToeBoard;
+import com.nyefan.anaconda.data.TicTacToeCreateRequest;
 import com.nyefan.anaconda.data.TicTacToeGame;
 import com.nyefan.anaconda.data.TicTacToeMoveRequest;
+import com.nyefan.anaconda.service.TicTacToeService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 
 @RestController
 @RequestMapping("/v1")
 public class TicTacToeAPIv1 {
+
+    private TicTacToeService service = new TicTacToeService();
 
     @GetMapping("/")
     public HttpEntity healthCheck() {
@@ -27,21 +32,29 @@ public class TicTacToeAPIv1 {
 
     @GetMapping("/api/games")
     public HttpEntity<List<TicTacToeGame>> getAllGames() {
-        return ResponseEntity.status(HttpStatus.OK).body(List.of(new TicTacToeGame(UUID.randomUUID(), "1", "2", new TicTacToeBoard())));
+        return ResponseEntity.status(HttpStatus.OK).body(service.getAllGames());
     }
 
     @PostMapping("/api/games")
-    public HttpEntity<TicTacToeGame> createGame() {
-        return ResponseEntity.status(HttpStatus.OK).body(new TicTacToeGame(UUID.randomUUID(), "1", "2", new TicTacToeBoard()));
+    public HttpEntity<TicTacToeGame> createGame(@RequestBody TicTacToeCreateRequest createRequest) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.createGame(createRequest));
     }
 
     @GetMapping("/api/games/{id}")
-    public HttpEntity<TicTacToeGame> getGame(@PathVariable("id") int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(new TicTacToeGame(UUID.randomUUID(), "1", "2", new TicTacToeBoard()));
+    public HttpEntity<TicTacToeGame> getGame(@PathVariable("id") UUID id) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getGame(id));
     }
 
     @PostMapping("/api/games/{id}")
-    public HttpEntity<TicTacToeGame> submitMove(@PathVariable("id") int id, @RequestBody TicTacToeMoveRequest moveRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(new TicTacToeGame(UUID.randomUUID(), "1", "2", new TicTacToeBoard()));
+    public HttpEntity<TicTacToeGame> submitMove(@PathVariable("id") UUID id, @RequestBody TicTacToeMoveRequest moveRequest) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.submitMove(id, moveRequest));
+    }
+
+    private <T> HttpEntity wrapException(Callable<T> callable) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(callable.call());
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 }
