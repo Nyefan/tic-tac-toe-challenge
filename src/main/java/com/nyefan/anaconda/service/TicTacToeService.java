@@ -9,12 +9,17 @@ import com.nyefan.anaconda.data.TicTacToeSubmitMoveRequest;
 import com.nyefan.anaconda.exception.TicTacToeException;
 import org.springframework.http.HttpStatus;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.IntStream;
 
 public class TicTacToeService {
 
     //TODO: inject an implementation of TicTacToeDao based on environment
+    //      this also would allow for easier testing
     private final TicTacToeDao dao = new TicTacToeInMemoryDao();
 
     public List<TicTacToeGame> getAllGames() {
@@ -53,13 +58,19 @@ public class TicTacToeService {
     // This is a bit convoluted - there is probably a cleaner way to do this, but not that immediately pops to mind for
     // a short one-off project while using the prescribed api
     private TicTacToeGame applyMove(TicTacToeGame game, TicTacToeSubmitMoveRequest move) {
+        if (!game.getVictor().equals(game.NONE)) {
+            throw new TicTacToeException(
+                    HttpStatus.BAD_REQUEST,
+                    String.format("Game %s is already complete: %s won", game.getGameID(), game.getVictor())
+            );
+        }
+
         // Ideally, the api would be accessed using a token unique per user from which the player's name can be pulled
-        // instead of this
-        Boolean moveValue;
+        TicTacToeBoard.Space moveValue;
         if (move.getPlayer().equals(game.getPlayerOne())) {
-            moveValue = Boolean.FALSE;
+            moveValue = TicTacToeBoard.Space.X;
         } else if (move.getPlayer().equals(game.getPlayerTwo())) {
-            moveValue = Boolean.TRUE;
+            moveValue = TicTacToeBoard.Space.O;
         } else {
             throw new TicTacToeException(
                     HttpStatus.BAD_REQUEST,
@@ -78,17 +89,72 @@ public class TicTacToeService {
             );
         }
 
-        Boolean[][] internalBoard = board.getBoard();
-        if (internalBoard[move.getX()][move.getY()] != null) {
+        TicTacToeBoard.Space[][] internalBoard = board.getBoard();
+        if (internalBoard[move.getX()][move.getY()] != TicTacToeBoard.Space.EMPTY) {
             throw new TicTacToeException(
                     HttpStatus.BAD_REQUEST,
                     String.format("Space (%s,%s) is already occupied", move.getX(), move.getY()));
         }
 
-        // Modifying the game state on a supposedly immutable object feels bad,
-        // but so does making a full deep copy of the original TicTacToeGame
+        // Modifying the game state on a supposedly immutable object feels bad, but so does making a full deep copy
         internalBoard[move.getX()][move.getY()] = moveValue;
 
-        return game;
+        TicTacToeGame outputGame = determineVictor(game, move)
+                //if this becomes a common pattern, it makes sense to put a builder in front of this
+                .map(victor -> new TicTacToeGame(game.getGameID(), game.getPlayerOne(), game.getPlayerTwo(), game.getBoard(), victor))
+                .orElse(game);
+
+        return outputGame;
+    }
+
+    private Optional<String> determineVictor(TicTacToeGame game, TicTacToeSubmitMoveRequest move) {
+        if (testVictoryHorizontal(game.getBoard(), move.getX(), move.getY())
+                || testVictoryVertical(game.getBoard(), move.getX(), move.getY())
+                || testVictoryDiagonal(game.getBoard(), move.getX(), move.getY())
+        ) {
+            return Optional.of(move.getPlayer());
+        }
+
+        boolean gameBoardFull = Arrays.stream(game.getBoard().getBoard())
+                                      .flatMap(Arrays::stream)
+                                      .noneMatch(space -> space.equals(TicTacToeBoard.Space.EMPTY));
+
+        if (gameBoardFull) {
+            return Optional.of(TicTacToeGame.DRAW);
+        }
+
+        return Optional.empty();
+    }
+
+    private boolean testVictoryVertical(TicTacToeBoard board, int lastMoveX, int lastMoveY) {
+        return testVictory(board, lastMoveX, lastMoveY, y -> board.getBoard()[lastMoveX][y]);
+    }
+
+    private boolean testVictoryHorizontal(TicTacToeBoard board, int lastMoveX, int lastMoveY) {
+        return testVictory(board, lastMoveX, lastMoveY, x -> board.getBoard()[x][lastMoveY]);
+    }
+
+    private boolean testVictoryDiagonal(TicTacToeBoard board, int lastMoveX, int lastMoveY) {
+        // Down-Right Diagonal \
+        if (lastMoveX == lastMoveY) {
+            return testVictory(board, lastMoveX, lastMoveY, i -> board.getBoard()[i][i]);
+        }
+
+        // Up-Right Diagonal /
+        if (lastMoveX + lastMoveX + 1 == board.getSize()) {
+            return testVictory(board, lastMoveX, lastMoveY, i -> board.getBoard()[i][board.getSize() - i - 1]);
+        }
+
+        // Not on a diagonal
+        return false;
+    }
+
+    private boolean testVictory(TicTacToeBoard board, int lastMoveX, int lastMoveY, Function<Integer, TicTacToeBoard.Space> spaceSelectionFunction) {
+        TicTacToeBoard.Space lastMoveValue = board.getBoard()[lastMoveX][lastMoveY];
+
+        return IntStream.range(0, board.getSize())
+                        .boxed()
+                        .map(spaceSelectionFunction)
+                        .allMatch(space -> space.equals(lastMoveValue));
     }
 }

@@ -6,7 +6,6 @@ import java.util.UUID;
 
 public final class TicTacToeSubmitMoveRequest {
 
-    @JsonProperty("id")
     private final UUID   gameID;
     private final String player;
     private final int    x;
@@ -19,20 +18,11 @@ public final class TicTacToeSubmitMoveRequest {
         this(UUID.randomUUID(), player, x, y);
     }
 
-    public TicTacToeSubmitMoveRequest(
-            @JsonProperty("id") UUID gameID,
-            @JsonProperty("player") String player,
-            @JsonProperty("x") int x,
-            @JsonProperty("y") int y) {
+    private TicTacToeSubmitMoveRequest(UUID gameID, String player, int x, int y) {
         this.gameID = gameID;
         this.player = player;
         this.x = x;
         this.y = y;
-    }
-
-    @JsonProperty("id")
-    public UUID getGameID() {
-        return gameID;
     }
 
     public String getPlayer() {
