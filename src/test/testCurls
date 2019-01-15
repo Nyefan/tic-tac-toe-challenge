@@ -1,0 +1,5 @@
+
+curl -v -X GET localhost:8080/anaconda/tictactoe/v1/api/games
+curl -v -X POST -H "Content-Type: application/json" "localhost:8080/anaconda/tictactoe/v1/api/games" --data "{""playerOne"":""one"", ""playerTwo"":""two""}"
+curl -v -X GET localhost:8080/anaconda/tictactoe/v1/api/games/8aaf4827-50ce-454d-91ba-6a9e7f653b4d
+curl -v -X POST -H "Content-Type: application/json" "localhost:8080/anaconda/tictactoe/v1/api/games" --data "{""player"":""one"", ""x"":1, ""y"":1}
