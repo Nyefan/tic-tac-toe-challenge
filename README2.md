@@ -10,6 +10,7 @@ mvn clean test
 ```
 
 ###Run integration tests
+The service must be running for these to pass.
 ```bash
 mvn clean test -Dtest-groups=integration
 ```
