@@ -5,11 +5,11 @@ import com.nyefan.anaconda.data.TicTacToeGame;
 import com.nyefan.anaconda.exception.TicTacToeException;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import java.security.AccessController;
 import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,6 +20,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class TicTacToeServiceTest {
 
     private TicTacToeService service = new TicTacToeService();
@@ -29,11 +30,7 @@ public class TicTacToeServiceTest {
     @Before
     public void setupMocks() throws PrivilegedActionException {
         // This should be handled by injecting the db into TicTacToeInMemoryDao
-        AccessController.doPrivileged((PrivilegedExceptionAction<Object>) () -> {
-            TicTacToeService.class.getDeclaredField("dao").setAccessible(true);
-            TicTacToeService.class.getDeclaredField("dao").set(service, dao);
-            return null;
-        });
+        service.setDao(dao);
     }
 
     @Test

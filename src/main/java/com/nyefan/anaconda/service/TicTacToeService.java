@@ -18,9 +18,14 @@ import java.util.stream.IntStream;
 
 public class TicTacToeService {
 
-    //TODO: inject an implementation of TicTacToeDao based on environment
-    //      this also would allow for easier testing
+    // TODO: inject an implementation of TicTacToeDao based on environment
+    //       this also would allow for easier testing
     private TicTacToeDao dao = new TicTacToeInMemoryDao();
+
+    // This is bad, but a simple way to get access to the db for tests in an example project
+    public void setDao(TicTacToeDao dao) {
+        this.dao = dao;
+    }
 
     public List<TicTacToeGame> getAllGames() {
         return dao.selectAllGames();

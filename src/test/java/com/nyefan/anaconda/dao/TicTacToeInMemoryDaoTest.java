@@ -12,14 +12,13 @@ import java.util.concurrent.ConcurrentMap;
 public class TicTacToeInMemoryDaoTest {
 
     private ConcurrentMap<UUID, TicTacToeGame> db;
-    private TicTacToeDao dao = new TicTacToeInMemoryDao();
+    private TicTacToeDao                       dao = new TicTacToeInMemoryDao();
 
-    // This should be handled by injecting the db into TicTacToeInMemoryDao
+    // This should be handled by injecting the db into TicTacToeDao
     @Before
-    public void beforeEach() throws NoSuchFieldException, IllegalAccessException {
-        TicTacToeInMemoryDao.class.getDeclaredField("db").setAccessible(true);
+    public void beforeEach() {
         db = new ConcurrentHashMap<>();
-        TicTacToeInMemoryDao.class.getDeclaredField("db").set(null, db);
+        ((TicTacToeInMemoryDao) dao).setDb(db);
     }
 
     //TODO: Implement the rest of the tests
@@ -31,5 +30,4 @@ public class TicTacToeInMemoryDaoTest {
         dao.upsertGame(game);
         Assert.assertEquals(game, db.get(game.getGameID()));
     }
-
 }

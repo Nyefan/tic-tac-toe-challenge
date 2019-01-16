@@ -3,12 +3,15 @@ package com.nyefan.anaconda.api;
 import io.restassured.RestAssured;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.test.annotation.IfProfileValue;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import static io.restassured.RestAssured.given;
 
-@IfProfileValue(name="test-groups", value="integration")
+@RunWith(SpringRunner.class)
+@IfProfileValue(name = "test-groups", value = "integration")
 public class TicTacToeAPIv1Test {
 
     @BeforeClass
