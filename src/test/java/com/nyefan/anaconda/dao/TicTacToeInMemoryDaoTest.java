@@ -17,9 +17,9 @@ public class TicTacToeInMemoryDaoTest {
     // This should be handled by injecting the db into TicTacToeInMemoryDao
     @Before
     public void beforeEach() throws NoSuchFieldException, IllegalAccessException {
-        TicTacToeInMemoryDao.class.getField("db").setAccessible(true);
+        TicTacToeInMemoryDao.class.getDeclaredField("db").setAccessible(true);
         db = new ConcurrentHashMap<>();
-        TicTacToeInMemoryDao.class.getField("db").set(null, db);
+        TicTacToeInMemoryDao.class.getDeclaredField("db").set(null, db);
     }
 
     //TODO: Implement the rest of the tests

@@ -6,16 +6,16 @@ import com.nyefan.anaconda.exception.TicTacToeException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
+import java.security.AccessController;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,10 +27,13 @@ public class TicTacToeServiceTest {
     private TicTacToeDao     dao;
 
     @Before
-    public void setupMocks() throws NoSuchFieldException, IllegalAccessException {
+    public void setupMocks() throws PrivilegedActionException {
         // This should be handled by injecting the db into TicTacToeInMemoryDao
-        TicTacToeService.class.getField("dao").setAccessible(true);
-        TicTacToeService.class.getField("dao").set(service, dao);
+        AccessController.doPrivileged((PrivilegedExceptionAction<Object>) () -> {
+            TicTacToeService.class.getDeclaredField("dao").setAccessible(true);
+            TicTacToeService.class.getDeclaredField("dao").set(service, dao);
+            return null;
+        });
     }
 
     @Test
@@ -40,7 +43,7 @@ public class TicTacToeServiceTest {
                 new TicTacToeGame(UUID.randomUUID(), null, null, null));
 
         when(dao.selectAllGames())
-               .thenReturn(expected);
+                .thenReturn(expected);
 
         List<TicTacToeGame> result = service.getAllGames();
 
@@ -49,7 +52,7 @@ public class TicTacToeServiceTest {
     }
 
     @Test
-    public void getGame(UUID gameID) {
+    public void getGame() {
         TicTacToeGame expected = new TicTacToeGame(UUID.randomUUID(), null, null, null);
 
         when(dao.selectGameByID(eq(expected.getGameID())))
@@ -62,7 +65,7 @@ public class TicTacToeServiceTest {
     }
 
     @Test(expected = TicTacToeException.class)
-    public void getGameOrElseThrow(UUID gameID) {
+    public void getGameOrElseThrow() {
         TicTacToeGame expected = new TicTacToeGame(UUID.randomUUID(), null, null, null);
 
         when(dao.selectGameByID(eq(expected.getGameID())))

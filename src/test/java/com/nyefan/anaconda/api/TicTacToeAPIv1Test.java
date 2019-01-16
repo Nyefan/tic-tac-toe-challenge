@@ -13,7 +13,7 @@ public class TicTacToeAPIv1Test {
 
     @BeforeClass
     public static void setup() {
-        RestAssured.port = Integer.valueOf(System.getProperty("server.port", "8089"));
+        RestAssured.port = Integer.valueOf(System.getProperty("server.port", "8080"));
         RestAssured.basePath = System.getProperty("server.servlet.context-path", "/anaconda/tictactoe")
                 + TicTacToeAPIv1.class.getAnnotation(RequestMapping.class).value()[0];
         RestAssured.baseURI = System.getProperty("server.host", "http://localhost");
